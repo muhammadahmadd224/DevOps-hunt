@@ -5,7 +5,17 @@
   const btnSel = document.getElementById("btnStyleSelect");
   const accentSel = document.getElementById("accentSelect");
 
-  const STORAGE_KEY = "devopshunt_prefs_v2";
+  const cycleFontBtn = document.getElementById("cycleFontBtn");
+  const cycleDesignBtn = document.getElementById("cycleDesignBtn");
+  const cycleColorBtn = document.getElementById("cycleColorBtn");
+
+  const FONTS = ["sans", "mono", "serif"];
+  const DESIGNS = ["rounded", "pill", "sharp", "outline"];
+  const ACCENTS = ["blue", "emerald", "rose", "violet"];
+  const GRAPH_MODES = ["line", "area", "bar"];
+
+  const STORAGE_KEY = "devopshunt_prefs_v3";
+  const GRAPH_KEY = "devopshunt_graph_mode_v1";
 
   function applySettings(cfg) {
     if (!cfg) return;
@@ -25,11 +35,17 @@
       theme: body.getAttribute("data-theme") || "clean-white",
       font: body.getAttribute("data-font") || "sans",
       btnStyle: body.getAttribute("data-btn") || "rounded",
-      accent: body.getAttribute("data-accent") || "slate",
+      accent: body.getAttribute("data-accent") || "blue",
     };
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
     } catch (_) {}
+  }
+
+  function cycleListValue(list, currentVal, fallback) {
+    const idx = list.indexOf(currentVal);
+    if (idx === -1) return fallback || list[0];
+    return list[(idx + 1) % list.length];
   }
 
   try {
@@ -50,6 +66,31 @@
     });
   });
 
+  if (cycleFontBtn) {
+    cycleFontBtn.addEventListener("click", () => {
+      const next = cycleListValue(FONTS, body.getAttribute("data-font") || "sans", "sans");
+      applySettings({ font: next });
+      persistSettings();
+    });
+  }
+
+  if (cycleDesignBtn) {
+    cycleDesignBtn.addEventListener("click", () => {
+      const next = cycleListValue(DESIGNS, body.getAttribute("data-btn") || "rounded", "rounded");
+      applySettings({ btnStyle: next });
+      persistSettings();
+    });
+  }
+
+  if (cycleColorBtn) {
+    cycleColorBtn.addEventListener("click", () => {
+      const next = cycleListValue(ACCENTS, body.getAttribute("data-accent") || "blue", "blue");
+      applySettings({ accent: next });
+      persistSettings();
+    });
+  }
+
+  // Image fallback so missing images never leave broken icons
   document.querySelectorAll("img.avatar-img").forEach((img) => {
     img.addEventListener("error", () => {
       const wrap = img.closest(".avatar-wrap");
@@ -62,87 +103,197 @@
     });
   });
 
-  const toggleBtn = document.getElementById("monitorLogsBtn");
+  // Dedicated Cron Log & Graph Page (logs.html)
+  const logBody = document.getElementById("logBody");
+  const graphSvg = document.getElementById("telemetryGraph");
+  const graphModeLabel = document.getElementById("graphModeLabel");
+  const changeGraphBtn = document.getElementById("changeGraphBtn");
   const pauseBtn = document.getElementById("pauseLogsBtn");
   const clearBtn = document.getElementById("clearLogsBtn");
-  const logSection = document.getElementById("logSection");
-  const logBody = document.getElementById("logBody");
   const statusDot = document.getElementById("statusDot");
 
-  const entries = [
-    { svc: "nginx", cls: "svc-nginx", msg: 'GET / HTTP/1.1 200 rt=0.001s upstream="static_site"' },
-    { svc: "systemd", cls: "svc-systemd", msg: "Started devopshunt-telemetry.service - DevOps-Hunt Service Watchdog." },
-    { svc: "cron", cls: "svc-cron", msg: "(root) CMD (/usr/local/bin/sysinfo.sh) -> exit status 0" },
-    { svc: "nginx", cls: "svc-nginx", msg: 'GET /about.html HTTP/1.1 200 rt=0.001s' },
-    { svc: "systemd", cls: "svc-systemd", msg: "systemd-journald: Runtime journal is 24.0M (max 512.0M)." },
-    { svc: "cron", cls: "svc-cron", msg: "(deploy) CMD (/usr/local/bin/backup.sh) -> snapshot verified OK" },
-  ];
+  const kpiLoad = document.getElementById("kpiLoad");
+  const kpiMem = document.getElementById("kpiMem");
+  const kpiDisk = document.getElementById("kpiDisk");
+  const kpiCronTime = document.getElementById("kpiCronTime");
 
-  let idx = 0;
-  let paused = false;
-  let intervalId = null;
+  if (logBody || graphSvg) {
+    let graphMode = "line";
+    try {
+      const savedMode = localStorage.getItem(GRAPH_KEY);
+      if (savedMode && GRAPH_MODES.includes(savedMode)) graphMode = savedMode;
+    } catch (_) {}
 
-  function nowStamp() {
-    return new Date().toISOString().replace("T", " ").slice(0, 19);
-  }
+    let latestSeries = [
+      { time: "T-70s", value: 38 },
+      { time: "T-60s", value: 44 },
+      { time: "T-50s", value: 41 },
+      { time: "T-40s", value: 57 },
+      { time: "T-30s", value: 52 },
+      { time: "T-20s", value: 68 },
+      { time: "T-10s", value: 61 },
+      { time: "Now", value: 73 },
+    ];
 
-  function pushLog() {
-    if (!logBody || paused) return;
-    const item = entries[idx % entries.length];
-    idx += 1;
-    const row = document.createElement("div");
-    row.className = "log-line";
-    row.innerHTML =
-      `<span class="ts">[${nowStamp()}]</span> ` +
-      `<span class="${item.cls}">[${item.svc}]</span> ` +
-      `<span class="ok">${item.msg}</span>`;
-    logBody.appendChild(row);
-    logBody.scrollTop = logBody.scrollHeight;
-  }
+    let paused = false;
 
-  function startLogs() {
-    if (intervalId) return;
-    paused = false;
-    if (statusDot) statusDot.classList.remove("paused");
-    if (pauseBtn) pauseBtn.textContent = "Pause";
-    pushLog();
-    intervalId = setInterval(pushLog, 2000);
-  }
-
-  function stopLogs() {
-    if (intervalId) {
-      clearInterval(intervalId);
-      intervalId = null;
+    function modeTitle(m) {
+      if (m === "area") return "Area Wave";
+      if (m === "bar") return "Bar Telemetry";
+      return "Line Trend";
     }
-  }
 
-  if (toggleBtn && logSection) {
-    toggleBtn.addEventListener("click", () => {
-      const hidden = logSection.hasAttribute("hidden");
-      if (hidden) {
-        logSection.removeAttribute("hidden");
-        toggleBtn.textContent = "Hide Live Logs";
-        startLogs();
-        logSection.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    function renderGraph(series) {
+      if (!graphSvg) return;
+      const w = 760;
+      const h = 240;
+      const padLeft = 44;
+      const padRight = 20;
+      const padTop = 22;
+      const padBottom = 34;
+      const plotW = w - padLeft - padRight;
+      const plotH = h - padTop - padBottom;
+
+      const pts = series.map((d, i) => {
+        const val = Math.max(5, Math.min(100, Number(d.value) || 20));
+        const x = padLeft + (series.length === 1 ? plotW / 2 : (i / (series.length - 1)) * plotW);
+        const y = padTop + plotH - (val / 100) * plotH;
+        return { x, y, val, label: d.time || "" };
+      });
+
+      const styles = getComputedStyle(document.body);
+      const accent = (styles.getPropertyValue("--accent") || "#2563eb").trim();
+      const accent2 = (styles.getPropertyValue("--accent-2") || "#06b6d4").trim();
+      const muted = (styles.getPropertyValue("--muted") || "#64748b").trim();
+      const border = (styles.getPropertyValue("--border") || "#cbd5e1").trim();
+
+      let svgContent = `
+        <defs>
+          <linearGradient id="graphGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="${accent}" />
+            <stop offset="100%" stop-color="${accent2}" />
+          </linearGradient>
+          <linearGradient id="areaFill" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="${accent}" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="${accent2}" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      `;
+
+      // Horizontal grid lines
+      [0, 25, 50, 75, 100].forEach((tick) => {
+        const gy = padTop + plotH - (tick / 100) * plotH;
+        svgContent += `<line x1="${padLeft}" y1="${gy.toFixed(1)}" x2="${w - padRight}" y2="${gy.toFixed(1)}" stroke="${border}" stroke-dasharray="4 4" stroke-width="1" />`;
+        svgContent += `<text x="${padLeft - 8}" y="${(gy + 4).toFixed(1)}" text-anchor="end" fill="${muted}" font-size="11">${tick}%</text>`;
+      });
+
+      if (graphMode === "bar") {
+        const slotW = plotW / Math.max(1, pts.length);
+        const barW = Math.max(14, slotW * 0.52);
+        pts.forEach((p) => {
+          const bx = p.x - barW / 2;
+          const bh = Math.max(4, padTop + plotH - p.y);
+          svgContent += `<rect x="${bx.toFixed(1)}" y="${p.y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" rx="5" fill="url(#graphGrad)" />`;
+          svgContent += `<text x="${p.x.toFixed(1)}" y="${(h - 10).toFixed(1)}" text-anchor="middle" fill="${muted}" font-size="10">${p.label}</text>`;
+        });
+      } else if (graphMode === "area") {
+        const linePath = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+        const areaPath = `${linePath} L ${pts[pts.length - 1].x.toFixed(1)} ${(padTop + plotH).toFixed(1)} L ${pts[0].x.toFixed(1)} ${(padTop + plotH).toFixed(1)} Z`;
+        svgContent += `<path d="${areaPath}" fill="url(#areaFill)" />`;
+        svgContent += `<path d="${linePath}" fill="none" stroke="url(#graphGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+        pts.forEach((p) => {
+          svgContent += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="4.5" fill="${accent}" stroke="#ffffff" stroke-width="1.5" />`;
+          svgContent += `<text x="${p.x.toFixed(1)}" y="${(h - 10).toFixed(1)}" text-anchor="middle" fill="${muted}" font-size="10">${p.label}</text>`;
+        });
       } else {
-        logSection.setAttribute("hidden", "");
-        toggleBtn.textContent = "Monitor Live Logs";
-        stopLogs();
+        const linePath = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+        svgContent += `<path d="${linePath}" fill="none" stroke="url(#graphGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />`;
+        pts.forEach((p) => {
+          svgContent += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="5" fill="#ffffff" stroke="${accent}" stroke-width="2.5" />`;
+          svgContent += `<text x="${p.x.toFixed(1)}" y="${(h - 10).toFixed(1)}" text-anchor="middle" fill="${muted}" font-size="10">${p.label}</text>`;
+        });
       }
-    });
-  }
 
-  if (pauseBtn) {
-    pauseBtn.addEventListener("click", () => {
-      paused = !paused;
-      if (statusDot) statusDot.classList.toggle("paused", paused);
-      pauseBtn.textContent = paused ? "Resume" : "Pause";
-    });
-  }
+      graphSvg.innerHTML = svgContent;
+      if (graphModeLabel) graphModeLabel.textContent = modeTitle(graphMode);
+    }
 
-  if (clearBtn && logBody) {
-    clearBtn.addEventListener("click", () => {
-      logBody.innerHTML = "";
+    function appendCronLogs(logItems) {
+      if (!logBody || paused || !Array.isArray(logItems)) return;
+      logItems.forEach((entry) => {
+        const svc = (entry.svc || "cron").toLowerCase();
+        const cls = svc === "nginx" ? "svc-nginx" : svc === "systemd" ? "svc-systemd" : "svc-cron";
+        const row = document.createElement("div");
+        row.className = "log-line";
+        row.innerHTML =
+          `<span class="ts">[${entry.ts || ""}]</span> ` +
+          `<span class="${cls}">[${svc}]</span> ` +
+          `<span class="ok">${entry.status || "OK"}: ${entry.msg || ""}</span>`;
+        logBody.appendChild(row);
+      });
+      logBody.scrollTop = logBody.scrollHeight;
+    }
+
+    async function fetchCronTelemetry() {
+      if (paused) return;
+      try {
+        const res = await fetch(`assets/cron-logs.json?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.metrics) {
+          if (kpiLoad) kpiLoad.textContent = data.metrics.load_1m ?? "—";
+          if (kpiMem) kpiMem.textContent = data.metrics.mem_pct != null ? `${data.metrics.mem_pct}%` : "—";
+          if (kpiDisk) kpiDisk.textContent = data.metrics.disk_pct != null ? `${data.metrics.disk_pct}%` : "—";
+        }
+        if (kpiCronTime && data.generated_at) {
+          kpiCronTime.textContent = data.generated_at;
+        }
+        if (Array.isArray(data.series) && data.series.length > 0) {
+          latestSeries = data.series;
+          renderGraph(latestSeries);
+        }
+        if (Array.isArray(data.logs) && data.logs.length > 0) {
+          appendCronLogs(data.logs);
+        }
+      } catch (_) {
+        renderGraph(latestSeries);
+      }
+    }
+
+    if (changeGraphBtn) {
+      changeGraphBtn.addEventListener("click", () => {
+        graphMode = cycleListValue(GRAPH_MODES, graphMode, "line");
+        try {
+          localStorage.setItem(GRAPH_KEY, graphMode);
+        } catch (_) {}
+        renderGraph(latestSeries);
+      });
+    }
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener("click", () => {
+        paused = !paused;
+        if (statusDot) statusDot.classList.toggle("paused", paused);
+        pauseBtn.textContent = paused ? "Resume" : "Pause";
+      });
+    }
+
+    if (clearBtn && logBody) {
+      clearBtn.addEventListener("click", () => {
+        logBody.innerHTML = "";
+      });
+    }
+
+    // Re-render graph when accent or theme changes
+    [themeSel, accentSel, cycleColorBtn].forEach((el) => {
+      if (!el) return;
+      el.addEventListener("change", () => renderGraph(latestSeries));
+      el.addEventListener("click", () => setTimeout(() => renderGraph(latestSeries), 20));
     });
+
+    renderGraph(latestSeries);
+    fetchCronTelemetry();
+    setInterval(fetchCronTelemetry, 5000);
   }
 })();

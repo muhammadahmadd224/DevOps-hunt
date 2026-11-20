@@ -6,55 +6,17 @@
   <title>DevOps-Hunt | Engineering &amp; Security Showcase</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<<<<<<< HEAD
-<body>
-  <h1>Welcome to DevOps-Hunt</h1>
-  <div class="cards">
-    <!-- Yasin Card: Mercedes Logo above Yasin Khan -->
-    <div class="card card-yasin">
-      <svg class="car-logo" viewBox="0 0 100 100" aria-label="Mercedes Logo">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="#111827" stroke-width="5"/>
-        <circle cx="50" cy="50" r="39" fill="none" stroke="#111827" stroke-width="2"/>
-        <polygon points="50,11 45,48 55,48" fill="#111827"/>
-        <polygon points="50,50 16,70 21,77 53,53" fill="#111827"/>
-        <polygon points="50,50 84,70 79,77 47,53" fill="#111827"/>
-      </svg>
-      <a class="member-name" href="members/yasin.html">Yasin Khan</a>
-      <span class="member-role">Scripter</span>
-    </div>
-
-    <!-- Shahid Card: BMW Logo above Shahid Khan -->
-    <div class="card card-shahid">
-      <svg class="car-logo" viewBox="0 0 100 100" aria-label="BMW Logo">
-        <circle cx="50" cy="50" r="46" fill="#111827"/>
-        <circle cx="50" cy="50" r="31" fill="#ffffff"/>
-        <path d="M50,19 A31,31 0 0,1 81,50 L50,50 Z" fill="#1c69d4"/>
-        <path d="M50,81 A31,31 0 0,1 19,50 L50,50 Z" fill="#1c69d4"/>
-        <circle cx="50" cy="50" r="31" fill="none" stroke="#ffffff" stroke-width="2"/>
-      </svg>
-      <a class="member-name" href="members/shahid.html">Shahid Khan</a>
-      <span class="member-role">Server Admin</span>
-    </div>
-
-    <div class="card">
-      <a class="member-name" href="members/example.html">Example Member</a>
-      <span class="member-role">DevOps Engineer</span>
-    </div>
-  </div>
-  <footer>
-    <p>Motto: Automate everything, break nothing.</p>
-    <p>Deployed: __VERSION__</p>
-=======
-<body data-theme="clean-white" data-font="sans" data-btn="rounded" data-accent="slate">
+<body data-theme="clean-white" data-font="sans" data-btn="rounded" data-accent="blue">
   <header class="site-header">
     <div class="container nav-inner">
       <a class="brand" href="index.html">
-        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-badge" aria-hidden="true">DH</span>
         <span>DevOps-Hunt</span>
       </a>
       <nav class="nav-links" aria-label="Main Navigation">
         <a class="active" href="index.html">Home</a>
         <a href="about.html">About</a>
+        <a href="logs.html">Live Logs</a>
         <a href="members/yasin.html">Yasin</a>
         <a href="members/shahid.html">Shahid</a>
         <a href="members/ahmad.html">Muhammad Ahmad</a>
@@ -65,10 +27,15 @@
   <main class="container">
     <section class="hero">
       <div>
-        <h1>Welcome to DevOps-Hunt</h1>
+        <h1 class="hero-title">Welcome to DevOps-Hunt</h1>
         <p>Production automation, resilient server administration, and cybersecurity engineering.</p>
       </div>
-      <button type="button" class="btn" id="monitorLogsBtn">Monitor Live Logs</button>
+      <div class="hero-actions">
+        <button type="button" class="btn btn-secondary" id="cycleFontBtn">Change Font</button>
+        <button type="button" class="btn btn-secondary" id="cycleDesignBtn">Change Design</button>
+        <button type="button" class="btn btn-secondary" id="cycleColorBtn">Change Color</button>
+        <a class="btn" href="logs.html">Monitor Live Logs</a>
+      </div>
     </section>
 
     <section class="customizer" aria-label="Website Appearance Controls">
@@ -91,7 +58,7 @@
       </div>
 
       <div class="ctrl-field">
-        <label for="btnStyleSelect">Button Style</label>
+        <label for="btnStyleSelect">Button &amp; Card Style</label>
         <select id="btnStyleSelect" class="ctrl-select">
           <option value="rounded">Rounded</option>
           <option value="pill">Pill</option>
@@ -103,10 +70,10 @@
       <div class="ctrl-field">
         <label for="accentSelect">Color Accent</label>
         <select id="accentSelect" class="ctrl-select">
-          <option value="slate">Charcoal Slate</option>
           <option value="blue">Royal Blue</option>
           <option value="emerald">Emerald</option>
           <option value="rose">Crimson</option>
+          <option value="violet">Violet</option>
         </select>
       </div>
     </section>
@@ -155,20 +122,6 @@
         <p class="member-bio">CI/CD pipelines, cloud automation &amp; security-first engineering.</p>
       </article>
     </section>
-
-    <section class="log-section" id="logSection" hidden aria-label="Live Service and System Logs">
-      <div class="log-header">
-        <div class="log-status">
-          <span class="status-dot" id="statusDot"></span>
-          <span>Live Service &amp; System Log Stream (nginx • systemd • cron)</span>
-        </div>
-        <div class="log-controls">
-          <button type="button" class="btn btn-secondary" id="pauseLogsBtn">Pause</button>
-          <button type="button" class="btn btn-secondary" id="clearLogsBtn">Clear</button>
-        </div>
-      </div>
-      <div class="log-body" id="logBody"></div>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -177,11 +130,13 @@
         <p><strong>DevOps-Hunt</strong> — Automate everything, break nothing.</p>
         <p>Deployed: __VERSION__</p>
       </div>
-      <div>
-        <a href="about.html">About Team</a> • <a href="members/ahmad.html">Muhammad Ahmad</a>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Team</a>
+        <a href="logs.html">Live Logs</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
       </div>
     </div>
->>>>>>> feat/member-kashif
   </footer>
 
   <script src="studio.js"></script>
