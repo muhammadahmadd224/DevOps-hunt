@@ -90,7 +90,6 @@
     });
   }
 
-  // Image fallback so missing images never leave broken icons
   document.querySelectorAll("img.avatar-img").forEach((img) => {
     img.addEventListener("error", () => {
       const wrap = img.closest(".avatar-wrap");
@@ -103,7 +102,7 @@
     });
   });
 
-  // Dedicated Cron Log & Graph Page (logs.html)
+  // System Telemetry & Live Logs Page (logs.html)
   const logBody = document.getElementById("logBody");
   const graphSvg = document.getElementById("telemetryGraph");
   const graphModeLabel = document.getElementById("graphModeLabel");
@@ -113,9 +112,13 @@
   const statusDot = document.getElementById("statusDot");
 
   const kpiLoad = document.getElementById("kpiLoad");
+  const kpiLoadBlock = document.getElementById("kpiLoadBlock");
   const kpiMem = document.getElementById("kpiMem");
+  const kpiMemBlock = document.getElementById("kpiMemBlock");
   const kpiDisk = document.getElementById("kpiDisk");
+  const kpiDiskBlock = document.getElementById("kpiDiskBlock");
   const kpiCronTime = document.getElementById("kpiCronTime");
+  const kpiCronBlock = document.getElementById("kpiCronBlock");
 
   if (logBody || graphSvg) {
     let graphMode = "line";
@@ -125,14 +128,14 @@
     } catch (_) {}
 
     let latestSeries = [
-      { time: "T-70s", value: 38 },
-      { time: "T-60s", value: 44 },
-      { time: "T-50s", value: 41 },
-      { time: "T-40s", value: 57 },
-      { time: "T-30s", value: 52 },
-      { time: "T-20s", value: 68 },
-      { time: "T-10s", value: 61 },
-      { time: "Now", value: 73 },
+      { time: "T-105s", value: 24 },
+      { time: "T-90s", value: 26 },
+      { time: "T-75s", value: 25 },
+      { time: "T-60s", value: 28 },
+      { time: "T-45s", value: 27 },
+      { time: "T-30s", value: 29 },
+      { time: "T-15s", value: 28 },
+      { time: "Now", value: 30 },
     ];
 
     let paused = false;
@@ -155,7 +158,7 @@
       const plotH = h - padTop - padBottom;
 
       const pts = series.map((d, i) => {
-        const val = Math.max(5, Math.min(100, Number(d.value) || 20));
+        const val = Math.max(2, Math.min(100, Number(d.value) || 10));
         const x = padLeft + (series.length === 1 ? plotW / 2 : (i / (series.length - 1)) * plotW);
         const y = padTop + plotH - (val / 100) * plotH;
         return { x, y, val, label: d.time || "" };
@@ -180,7 +183,6 @@
         </defs>
       `;
 
-      // Horizontal grid lines
       [0, 25, 50, 75, 100].forEach((tick) => {
         const gy = padTop + plotH - (tick / 100) * plotH;
         svgContent += `<line x1="${padLeft}" y1="${gy.toFixed(1)}" x2="${w - padRight}" y2="${gy.toFixed(1)}" stroke="${border}" stroke-dasharray="4 4" stroke-width="1" />`;
@@ -218,10 +220,10 @@
       if (graphModeLabel) graphModeLabel.textContent = modeTitle(graphMode);
     }
 
-    function appendCronLogs(logItems) {
+    function appendLogs(logItems) {
       if (!logBody || paused || !Array.isArray(logItems)) return;
       logItems.forEach((entry) => {
-        const svc = (entry.svc || "cron").toLowerCase();
+        const svc = (entry.svc || "systemd").toLowerCase();
         const cls = svc === "nginx" ? "svc-nginx" : svc === "systemd" ? "svc-systemd" : "svc-cron";
         const row = document.createElement("div");
         row.className = "log-line";
@@ -234,7 +236,30 @@
       logBody.scrollTop = logBody.scrollHeight;
     }
 
-    async function fetchCronTelemetry() {
+    // Read real live memory directly from /proc/meminfo on the host
+    async function pollRealMemory() {
+      if (paused || !kpiMem) return;
+      try {
+        const res = await fetch(`/proc/meminfo?t=${Date.now()}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const txt = await res.text();
+        const totalMatch = txt.match(/^MemTotal:\s+(\d+)\s+kB/m);
+        const availMatch = txt.match(/^MemAvailable:\s+(\d+)\s+kB/m);
+        if (!totalMatch || !availMatch) return;
+
+        const totalMiB = Math.round(Number(totalMatch[1]) / 1024);
+        const availMiB = Math.round(Number(availMatch[1]) / 1024);
+        const usedMiB = Math.max(0, totalMiB - availMiB);
+        const pct = totalMiB > 0 ? Math.round((usedMiB / totalMiB) * 100) : 0;
+
+        kpiMem.textContent = `${pct}%`;
+        if (kpiMemBlock) {
+          kpiMemBlock.textContent = `${usedMiB} MiB / ${totalMiB} MiB • ${availMiB} MiB free`;
+        }
+      } catch (_) {}
+    }
+
+    async function fetchTelemetrySnapshot() {
       if (paused) return;
       try {
         const res = await fetch(`assets/cron-logs.json?t=${Date.now()}`, { cache: "no-store" });
@@ -243,8 +268,21 @@
 
         if (data.metrics) {
           if (kpiLoad) kpiLoad.textContent = data.metrics.load_1m ?? "—";
-          if (kpiMem) kpiMem.textContent = data.metrics.mem_pct != null ? `${data.metrics.mem_pct}%` : "—";
+          if (kpiLoadBlock) kpiLoadBlock.textContent = data.metrics.load_detail || "vCPU & uptime";
+
+          if (data.metrics.mem_pct != null && kpiMem) {
+            kpiMem.textContent = `${data.metrics.mem_pct}%`;
+          }
+          if (kpiMemBlock && data.metrics.mem_detail) {
+            kpiMemBlock.textContent = data.metrics.mem_detail;
+          }
+
           if (kpiDisk) kpiDisk.textContent = data.metrics.disk_pct != null ? `${data.metrics.disk_pct}%` : "—";
+          if (kpiDiskBlock) kpiDiskBlock.textContent = data.metrics.disk_detail || "Filesystem /";
+
+          if (kpiCronBlock) {
+            kpiCronBlock.textContent = data.metrics.snapshot_detail || (data.host ? `Host: ${data.host}` : "Host active");
+          }
         }
         if (kpiCronTime && data.generated_at) {
           kpiCronTime.textContent = data.generated_at;
@@ -254,7 +292,7 @@
           renderGraph(latestSeries);
         }
         if (Array.isArray(data.logs) && data.logs.length > 0) {
-          appendCronLogs(data.logs);
+          appendLogs(data.logs);
         }
       } catch (_) {
         renderGraph(latestSeries);
@@ -285,7 +323,6 @@
       });
     }
 
-    // Re-render graph when accent or theme changes
     [themeSel, accentSel, cycleColorBtn].forEach((el) => {
       if (!el) return;
       el.addEventListener("change", () => renderGraph(latestSeries));
@@ -293,7 +330,9 @@
     });
 
     renderGraph(latestSeries);
-    fetchCronTelemetry();
-    setInterval(fetchCronTelemetry, 5000);
+    fetchTelemetrySnapshot();
+    pollRealMemory();
+    setInterval(fetchTelemetrySnapshot, 6000);
+    setInterval(pollRealMemory, 2500);
   }
 })();
