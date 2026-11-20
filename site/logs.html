@@ -28,7 +28,7 @@
     <section class="hero">
       <div>
         <h1 class="hero-title">Cron Telemetry &amp; Live Logs</h1>
-        <p>Powered by scheduled Linux <code>cron</code> snapshots (<code>/usr/local/bin/devopshunt_cron_logs.sh</code>).</p>
+        <p>Automated every 2 minutes via <code>*/2 * * * * /usr/local/bin/devopshunt_cron_logs.sh</code>.</p>
       </div>
       <div class="hero-actions">
         <button type="button" class="btn" id="changeGraphBtn">Change Graph Design</button>
@@ -38,20 +38,27 @@
 
     <section class="kpi-grid" aria-label="System Metrics">
       <div class="kpi-card">
-        <div class="kpi-label">1m Load Average</div>
+        <div class="kpi-label">1-Minute CPU Load Avg</div>
         <div class="kpi-val" id="kpiLoad">—</div>
+        <div class="kpi-block" id="kpiLoadBlock">vCPU run queue: loading...</div>
       </div>
+
       <div class="kpi-card">
-        <div class="kpi-label">Memory Usage</div>
+        <div class="kpi-label">Live Memory Usage</div>
         <div class="kpi-val" id="kpiMem">—</div>
+        <div class="kpi-block" id="kpiMemBlock">RAM block: loading...</div>
       </div>
+
       <div class="kpi-card">
         <div class="kpi-label">Root Disk Usage</div>
         <div class="kpi-val" id="kpiDisk">—</div>
+        <div class="kpi-block" id="kpiDiskBlock">Filesystem /: loading...</div>
       </div>
+
       <div class="kpi-card">
         <div class="kpi-label">Last Cron Snapshot</div>
         <div class="kpi-val" id="kpiCronTime" style="font-size: 0.95rem;">—</div>
+        <div class="kpi-block" id="kpiCronBlock">Schedule: */2 * * * *</div>
       </div>
     </section>
 
