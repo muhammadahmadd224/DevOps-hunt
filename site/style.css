@@ -27,6 +27,11 @@ body {
   background-color: #f9fafb;
 }
 
+.card-shahid {
+  border-color: #1d4ed8;
+  background-color: #eff6ff;
+}
+
 .car-logo {
   width: 52px;
   height: 52px;
