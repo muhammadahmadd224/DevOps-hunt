@@ -1,4 +1,53 @@
-body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
-.card { border: 1px solid #ccc; padding: 1rem; border-radius: 6px; }
-footer { margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem; color: #555; }
+body {
+  font-family: sans-serif;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-yasin {
+  border-color: #111827;
+  background-color: #f9fafb;
+}
+
+.car-logo {
+  width: 52px;
+  height: 52px;
+  display: block;
+}
+
+.member-name {
+  font-weight: bold;
+  font-size: 1.05rem;
+  text-decoration: none;
+  color: #111827;
+}
+
+.member-role {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+footer {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+  color: #555;
+}
