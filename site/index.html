@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DevOps-Hunt Team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps-Hunt | Engineering &amp; Security Showcase</title>
   <link rel="stylesheet" href="style.css">
 </head>
+<<<<<<< HEAD
 <body>
   <h1>Welcome to DevOps-Hunt</h1>
   <div class="cards">
@@ -42,6 +44,146 @@
   <footer>
     <p>Motto: Automate everything, break nothing.</p>
     <p>Deployed: __VERSION__</p>
+=======
+<body data-theme="clean-white" data-font="sans" data-btn="rounded" data-accent="slate">
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>DevOps-Hunt</span>
+      </a>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="members/yasin.html">Yasin</a>
+        <a href="members/shahid.html">Shahid</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Welcome to DevOps-Hunt</h1>
+        <p>Production automation, resilient server administration, and cybersecurity engineering.</p>
+      </div>
+      <button type="button" class="btn" id="monitorLogsBtn">Monitor Live Logs</button>
+    </section>
+
+    <section class="customizer" aria-label="Website Appearance Controls">
+      <div class="ctrl-field">
+        <label for="themeSelect">Background Theme</label>
+        <select id="themeSelect" class="ctrl-select">
+          <option value="clean-white">Clean White</option>
+          <option value="soft-slate">Soft Slate</option>
+          <option value="obsidian-pro">Obsidian Dark</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="fontSelect">Font Style</label>
+        <select id="fontSelect" class="ctrl-select">
+          <option value="sans">Clean Sans</option>
+          <option value="mono">Monospace Code</option>
+          <option value="serif">Classic Serif</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="btnStyleSelect">Button Style</label>
+        <select id="btnStyleSelect" class="ctrl-select">
+          <option value="rounded">Rounded</option>
+          <option value="pill">Pill</option>
+          <option value="sharp">Sharp</option>
+          <option value="outline">Outline</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="accentSelect">Color Accent</label>
+        <select id="accentSelect" class="ctrl-select">
+          <option value="slate">Charcoal Slate</option>
+          <option value="blue">Royal Blue</option>
+          <option value="emerald">Emerald</option>
+          <option value="rose">Crimson</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="cards" aria-label="Team Members">
+      <!-- Yasin Card -->
+      <article class="card">
+        <div class="logo-badge">
+          <svg class="car-logo" viewBox="0 0 100 100" aria-label="Mercedes Emblem">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#0f172a" stroke-width="5"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#0f172a" stroke-width="2"/>
+            <polygon points="50,12 45,48 55,48" fill="#0f172a"/>
+            <polygon points="50,50 16,70 21,77 53,53" fill="#0f172a"/>
+            <polygon points="50,50 84,70 79,77 47,53" fill="#0f172a"/>
+          </svg>
+        </div>
+        <a class="member-name" href="members/yasin.html">Yasin Khan</a>
+        <span class="member-role">Scripter</span>
+        <p class="member-bio">Bash automation, diagnostics &amp; scheduled cron workflows.</p>
+      </article>
+
+      <!-- Shahid Card -->
+      <article class="card">
+        <div class="logo-badge">
+          <svg class="car-logo" viewBox="0 0 100 100" aria-label="BMW Emblem">
+            <circle cx="50" cy="50" r="45" fill="#0f172a"/>
+            <circle cx="50" cy="50" r="30" fill="#ffffff"/>
+            <path d="M50,20 A30,30 0 0,1 80,50 L50,50 Z" fill="#1d4ed8"/>
+            <path d="M50,80 A30,30 0 0,1 20,50 L50,50 Z" fill="#1d4ed8"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#ffffff" stroke-width="2"/>
+          </svg>
+        </div>
+        <a class="member-name" href="members/shahid.html">Shahid Khan</a>
+        <span class="member-role">Server Admin</span>
+        <p class="member-bio">Linux server hardening, Nginx routing &amp; uptime operations.</p>
+      </article>
+
+      <!-- Muhammad Ahmad Card -->
+      <article class="card">
+        <div class="avatar-wrap">
+          <img class="avatar-img" src="assets/ahmad.jpg" alt="Muhammad Ahmad" data-initials="MA">
+        </div>
+        <a class="member-name" href="members/ahmad.html">Muhammad Ahmad</a>
+        <span class="member-role">DevOps Engineer</span>
+        <p class="member-sub">Master in Cybersecurity</p>
+        <p class="member-bio">CI/CD pipelines, cloud automation &amp; security-first engineering.</p>
+      </article>
+    </section>
+
+    <section class="log-section" id="logSection" hidden aria-label="Live Service and System Logs">
+      <div class="log-header">
+        <div class="log-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span>Live Service &amp; System Log Stream (nginx • systemd • cron)</span>
+        </div>
+        <div class="log-controls">
+          <button type="button" class="btn btn-secondary" id="pauseLogsBtn">Pause</button>
+          <button type="button" class="btn btn-secondary" id="clearLogsBtn">Clear</button>
+        </div>
+      </div>
+      <div class="log-body" id="logBody"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p><strong>DevOps-Hunt</strong> — Automate everything, break nothing.</p>
+        <p>Deployed: __VERSION__</p>
+      </div>
+      <div>
+        <a href="about.html">About Team</a> • <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </div>
+    </div>
+>>>>>>> feat/member-kashif
   </footer>
+
+  <script src="studio.js"></script>
 </body>
 </html>
