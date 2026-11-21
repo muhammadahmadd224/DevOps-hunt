@@ -24,10 +24,8 @@ jobs:
       - name: Upload files to staging directory
         run: |
           rsync -avz --delete \
-            --exclude '.git' \
-            --exclude '.github' \
             -e "ssh -i ~/.ssh/id_ed25519 -o UserKnownHostsFile=~/.ssh/known_hosts" \
-            ./ "deploy@${{ vars.DEPLOY_HOST }}:/var/www/devopshunt/upload/"
+            ./site/ "deploy@${{ vars.DEPLOY_HOST }}:/var/www/devopshunt/upload/"
 
       - name: Run remote deploy script
         run: |
