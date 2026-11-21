@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Telemetry &amp; Live Logs | DevOps-Hunt</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="clean-white" data-font="sans" data-btn="rounded" data-accent="blue">
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-badge" aria-hidden="true">DH</span>
+        <span>DevOps-Hunt</span>
+      </a>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a class="active" href="logs.html">Live Logs</a>
+        <a href="members/yasin.html">Yasin</a>
+        <a href="members/shahid.html">Shahid</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">System Telemetry &amp; Live Logs</h1>
+        <p>Live host resource metrics, workload graph, and service log stream.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" class="btn" id="changeGraphBtn">Change Graph Design</button>
+        <a class="btn btn-secondary" href="index.html">Back to Home</a>
+      </div>
+    </section>
+
+    <section class="kpi-grid" aria-label="System Metrics">
+      <div class="kpi-card">
+        <div class="kpi-label">1-Minute CPU Load Avg</div>
+        <div class="kpi-val" id="kpiLoad">—</div>
+        <div class="kpi-block" id="kpiLoadBlock">CPU cores &amp; uptime: reading...</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Live Memory Usage</div>
+        <div class="kpi-val" id="kpiMem">—</div>
+        <div class="kpi-block" id="kpiMemBlock">Physical RAM: reading...</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Root Disk Usage</div>
+        <div class="kpi-val" id="kpiDisk">—</div>
+        <div class="kpi-block" id="kpiDiskBlock">Filesystem /: reading...</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">Last Telemetry Snapshot</div>
+        <div class="kpi-val" id="kpiCronTime" style="font-size: 0.95rem;">—</div>
+        <div class="kpi-block" id="kpiCronBlock">Host status: reading...</div>
+      </div>
+    </section>
+
+    <section class="graph-panel" aria-label="Telemetry Graph">
+      <div class="graph-top">
+        <h2>Workload Telemetry — <span id="graphModeLabel">Line Trend</span></h2>
+        <button type="button" class="btn btn-secondary" id="cycleColorBtn">Change Color</button>
+      </div>
+      <svg id="telemetryGraph" class="graph-svg" viewBox="0 0 760 240" role="img" aria-label="System workload telemetry graph"></svg>
+    </section>
+
+    <section class="log-section" aria-label="System Log Output">
+      <div class="log-header">
+        <div class="log-status">
+          <span class="status-dot" id="statusDot"></span>
+          <span>Live System &amp; Service Log Feed</span>
+        </div>
+        <div class="log-controls">
+          <button type="button" class="btn btn-secondary" id="pauseLogsBtn">Pause</button>
+          <button type="button" class="btn btn-secondary" id="clearLogsBtn">Clear</button>
+        </div>
+      </div>
+      <div class="log-body" id="logBody"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p><strong>DevOps-Hunt</strong> — Automate everything, break nothing.</p>
+        <p>Deployed: __VERSION__</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Team</a>
+        <a href="logs.html">Live Logs</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="studio.js"></script>
+</body>
+</html>

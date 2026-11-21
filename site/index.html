@@ -2,46 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>DevOps-Hunt Team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps-Hunt | Engineering &amp; Security Showcase</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>Welcome to DevOps-Hunt</h1>
-  <div class="cards">
-    <!-- Yasin Card: Mercedes Logo above Yasin Khan -->
-    <div class="card card-yasin">
-      <svg class="car-logo" viewBox="0 0 100 100" aria-label="Mercedes Logo">
-        <circle cx="50" cy="50" r="45" fill="none" stroke="#111827" stroke-width="5"/>
-        <circle cx="50" cy="50" r="39" fill="none" stroke="#111827" stroke-width="2"/>
-        <polygon points="50,11 45,48 55,48" fill="#111827"/>
-        <polygon points="50,50 16,70 21,77 53,53" fill="#111827"/>
-        <polygon points="50,50 84,70 79,77 47,53" fill="#111827"/>
-      </svg>
-      <a class="member-name" href="members/yasin.html">Yasin Khan</a>
-      <span class="member-role">Scripter</span>
+<body data-theme="clean-white" data-font="sans" data-btn="rounded" data-accent="blue">
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-badge" aria-hidden="true">DH</span>
+        <span>DevOps-Hunt</span>
+      </a>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a class="active" href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="logs.html">Live Logs</a>
+        <a href="members/yasin.html">Yasin</a>
+        <a href="members/shahid.html">Shahid</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Shahid Card: BMW Logo above Shahid Khan -->
-    <div class="card card-shahid">
-      <svg class="car-logo" viewBox="0 0 100 100" aria-label="BMW Logo">
-        <circle cx="50" cy="50" r="46" fill="#111827"/>
-        <circle cx="50" cy="50" r="31" fill="#ffffff"/>
-        <path d="M50,19 A31,31 0 0,1 81,50 L50,50 Z" fill="#1c69d4"/>
-        <path d="M50,81 A31,31 0 0,1 19,50 L50,50 Z" fill="#1c69d4"/>
-        <circle cx="50" cy="50" r="31" fill="none" stroke="#ffffff" stroke-width="2"/>
-      </svg>
-      <a class="member-name" href="members/shahid.html">Shahid Khan</a>
-      <span class="member-role">Server Admin</span>
-    </div>
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">Welcome to DevOps-Hunt</h1>
+        <p>Production automation, resilient server administration, and cybersecurity engineering.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" class="btn btn-secondary" id="cycleFontBtn">Change Font</button>
+        <button type="button" class="btn btn-secondary" id="cycleDesignBtn">Change Design</button>
+        <button type="button" class="btn btn-secondary" id="cycleColorBtn">Change Color</button>
+        <a class="btn" href="logs.html">Monitor Live Logs</a>
+      </div>
+    </section>
 
-    <div class="card">
-      <a class="member-name" href="members/example.html">Example Member</a>
-      <span class="member-role">DevOps Engineer</span>
+    <section class="customizer" aria-label="Website Appearance Controls">
+      <div class="ctrl-field">
+        <label for="themeSelect">Background Theme</label>
+        <select id="themeSelect" class="ctrl-select">
+          <option value="clean-white">Clean White</option>
+          <option value="soft-slate">Soft Slate</option>
+          <option value="obsidian-pro">Obsidian Dark</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="fontSelect">Font Style</label>
+        <select id="fontSelect" class="ctrl-select">
+          <option value="sans">Clean Sans</option>
+          <option value="mono">Monospace Code</option>
+          <option value="serif">Classic Serif</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="btnStyleSelect">Button &amp; Card Style</label>
+        <select id="btnStyleSelect" class="ctrl-select">
+          <option value="rounded">Rounded</option>
+          <option value="pill">Pill</option>
+          <option value="sharp">Sharp</option>
+          <option value="outline">Outline</option>
+        </select>
+      </div>
+
+      <div class="ctrl-field">
+        <label for="accentSelect">Color Accent</label>
+        <select id="accentSelect" class="ctrl-select">
+          <option value="blue">Royal Blue</option>
+          <option value="emerald">Emerald</option>
+          <option value="rose">Crimson</option>
+          <option value="violet">Violet</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="cards" aria-label="Team Members">
+      <!-- Yasin Card -->
+      <article class="card">
+        <div class="logo-badge">
+          <svg class="car-logo" viewBox="0 0 100 100" aria-label="Mercedes Emblem">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="#0f172a" stroke-width="5"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#0f172a" stroke-width="2"/>
+            <polygon points="50,12 45,48 55,48" fill="#0f172a"/>
+            <polygon points="50,50 16,70 21,77 53,53" fill="#0f172a"/>
+            <polygon points="50,50 84,70 79,77 47,53" fill="#0f172a"/>
+          </svg>
+        </div>
+        <a class="member-name" href="members/yasin.html">Yasin Khan</a>
+        <span class="member-role">Scripter</span>
+        <p class="member-bio">Bash automation, diagnostics &amp; scheduled cron workflows.</p>
+      </article>
+
+      <!-- Shahid Card -->
+      <article class="card">
+        <div class="logo-badge">
+          <svg class="car-logo" viewBox="0 0 100 100" aria-label="BMW Emblem">
+            <circle cx="50" cy="50" r="45" fill="#0f172a"/>
+            <circle cx="50" cy="50" r="30" fill="#ffffff"/>
+            <path d="M50,20 A30,30 0 0,1 80,50 L50,50 Z" fill="#1d4ed8"/>
+            <path d="M50,80 A30,30 0 0,1 20,50 L50,50 Z" fill="#1d4ed8"/>
+            <circle cx="50" cy="50" r="30" fill="none" stroke="#ffffff" stroke-width="2"/>
+          </svg>
+        </div>
+        <a class="member-name" href="members/shahid.html">Shahid Khan</a>
+        <span class="member-role">Server Admin</span>
+        <p class="member-bio">Linux server hardening, Nginx routing &amp; uptime operations.</p>
+      </article>
+
+      <!-- Muhammad Ahmad Card -->
+      <article class="card">
+        <div class="avatar-wrap">
+          <img class="avatar-img" src="assets/ahmad.jpg" alt="Muhammad Ahmad" data-initials="MA">
+        </div>
+        <a class="member-name" href="members/ahmad.html">Muhammad Ahmad</a>
+        <span class="member-role">DevOps Engineer</span>
+        <p class="member-sub">Master in Cybersecurity</p>
+        <p class="member-bio">CI/CD pipelines, cloud automation &amp; security-first engineering.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p><strong>DevOps-Hunt</strong> — Automate everything, break nothing.</p>
+        <p>Deployed: __VERSION__</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Team</a>
+        <a href="logs.html">Live Logs</a>
+        <a href="members/ahmad.html">Muhammad Ahmad</a>
+      </div>
     </div>
-  </div>
-  <footer>
-    <p>Motto: Automate everything, break nothing.</p>
-    <p>Deployed: __VERSION__</p>
   </footer>
+
+  <script src="studio.js"></script>
 </body>
 </html>

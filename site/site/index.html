@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevOps-Hunt Team</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="cyber-dark" data-font="sans" data-btn="rounded" data-accent="sky">
+  <header class="hero">
+    <div>
+      <h1>Welcome to DevOps-Hunt</h1>
+      <p class="subtitle">Automated infrastructure, live telemetry, and security engineering</p>
+    </div>
+    <button type="button" class="btn" id="toggleLiveLogsBtn">Monitor Live Logs</button>
+  </header>
+
+  <section class="studio-bar" aria-label="Appearance Customizer">
+    <div class="ctrl-group">
+      <label for="themeSelect">Background Theme</label>
+      <select id="themeSelect" class="ctrl-select">
+        <option value="cyber-dark">Cyber Dark</option>
+        <option value="solar-light">Solar Light</option>
+        <option value="emerald-ops">Emerald Ops</option>
+      </select>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="fontSelect">Font Style</label>
+      <select id="fontSelect" class="ctrl-select">
+        <option value="sans">Modern Sans</option>
+        <option value="mono">Terminal Mono</option>
+        <option value="serif">Editorial Serif</option>
+      </select>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="btnStyleSelect">Button Style</label>
+      <select id="btnStyleSelect" class="ctrl-select">
+        <option value="rounded">Rounded</option>
+        <option value="pill">Pill</option>
+        <option value="sharp">Sharp</option>
+        <option value="outline">Outline</option>
+      </select>
+    </div>
+
+    <div class="ctrl-group">
+      <label for="accentSelect">Accent Color</label>
+      <select id="accentSelect" class="ctrl-select">
+        <option value="sky">Sky Blue</option>
+        <option value="emerald">Emerald Green</option>
+        <option value="amber">Amber Gold</option>
+        <option value="rose">Crimson Rose</option>
+      </select>
+    </div>
+  </section>
+
+  <div class="cards">
+    <!-- Yasin Card: Mercedes Logo above Yasin Khan -->
+    <div class="card card-yasin">
+      <svg class="car-logo" viewBox="0 0 100 100" aria-label="Mercedes Logo">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="5"/>
+        <circle cx="50" cy="50" r="39" fill="none" stroke="currentColor" stroke-width="2"/>
+        <polygon points="50,11 45,48 55,48" fill="currentColor"/>
+        <polygon points="50,50 16,70 21,77 53,53" fill="currentColor"/>
+        <polygon points="50,50 84,70 79,77 47,53" fill="currentColor"/>
+      </svg>
+      <a class="member-name" href="members/yasin.html">Yasin Khan</a>
+      <span class="member-role">Scripter</span>
+      <p class="member-bio">Bash automation, cron jobs &amp; live system telemetry.</p>
+    </div>
+
+    <!-- Shahid Card: BMW Logo above Shahid Khan -->
+    <div class="card card-shahid">
+      <svg class="car-logo" viewBox="0 0 100 100" aria-label="BMW Logo">
+        <circle cx="50" cy="50" r="46" fill="#111827"/>
+        <circle cx="50" cy="50" r="31" fill="#ffffff"/>
+        <path d="M50,19 A31,31 0 0,1 81,50 L50,50 Z" fill="#1c69d4"/>
+        <path d="M50,81 A31,31 0 0,1 19,50 L50,50 Z" fill="#1c69d4"/>
+        <circle cx="50" cy="50" r="31" fill="none" stroke="#ffffff" stroke-width="2"/>
+      </svg>
+      <a class="member-name" href="members/shahid.html">Shahid Khan</a>
+      <span class="member-role">Server Admin</span>
+      <p class="member-bio">EC2 hardening, Nginx routing &amp; service reliability.</p>
+    </div>
+
+    <!-- Placeholder card until Muhammad Ahmad replaces it -->
+    <div class="card" id="example-placeholder">
+      <a class="member-name" href="#">Example Member</a>
+      <span class="member-role">Pending Replacement</span>
+      <p class="member-bio">Will be replaced by Muhammad Ahmad.</p>
+    </div>
+  </div>
+
+  <section class="monitor-panel" id="monitorPanel" hidden aria-label="Live Service and System Logs">
+    <div class="monitor-header">
+      <div class="monitor-title">
+        <span class="live-dot" id="liveDot"></span>
+        <span>LIVE TELEMETRY // nginx • systemd • cron</span>
+      </div>
+      <div class="monitor-actions">
+        <button type="button" class="btn btn-ghost" id="pauseStreamBtn">Pause Stream</button>
+        <button type="button" class="btn btn-ghost" id="clearLogsBtn">Clear</button>
+      </div>
+    </div>
+    <div class="log-screen" id="logScreen"></div>
+  </section>
+
+  <footer>
+    <div>
+      <p>Motto: Automate everything, break nothing.</p>
+      <p>Deployed: __VERSION__</p>
+    </div>
+  </footer>
+
+  <script src="studio.js"></script>
+</body>
+</html>
