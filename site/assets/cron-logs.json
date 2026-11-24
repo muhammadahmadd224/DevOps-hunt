@@ -1,18 +1,18 @@
 {
   "host": "ip-172-31-27-215",
-  "generated_at": "2026-11-21 15:02:01 UTC",
+  "generated_at": "2026-11-24 06:02:01 UTC",
   "metrics": {
-    "load_1m": "0.00",
-    "load_detail": "Uptime: 2 hours, 16 minutes",
+    "load_1m": "0.04",
+    "load_detail": "Uptime: 1 hour, 14 minutes",
     "mem_pct": 37,
-    "mem_detail": "343 MiB / 908 MiB • 565 MiB free",
+    "mem_detail": "339 MiB / 908 MiB • 569 MiB free",
     "disk_pct": 27,
     "disk_detail": "3.5G / 14G used on /",
     "snapshot_detail": "Host: ip-172-31-27-215 • cron 1m"
   },
   "logs": [
-    { "ts": "15:02:01", "svc": "nginx", "status": "OK", "msg": "Reverse proxy active (active) serving devopshunt.duckdns.org" },
-    { "ts": "15:02:01", "svc": "systemd", "status": "OK", "msg": "Load 0.00 | RAM 37% (343/908 MiB) | Disk 27%" },
-    { "ts": "15:02:01", "svc": "cron", "status": "OK", "msg": "Telemetry collector active (active) on ip-172-31-27-215" }
+    { "ts": "06:02:01", "svc": "nginx", "status": "OK", "msg": "Reverse proxy active (active) serving devopshunt.duckdns.org" },
+    { "ts": "06:02:01", "svc": "systemd", "status": "OK", "msg": "Load 0.04 | RAM 37% (339/908 MiB) | Disk 27%" },
+    { "ts": "06:02:01", "svc": "cron", "status": "OK", "msg": "Telemetry collector active (active) on ip-172-31-27-215" }
   ]
 }

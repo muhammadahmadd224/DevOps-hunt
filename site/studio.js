@@ -195,7 +195,10 @@
         pts.forEach((p) => {
           const bx = p.x - barW / 2;
           const bh = Math.max(4, padTop + plotH - p.y);
-          svgContent += `<rect x="${bx.toFixed(1)}" y="${p.y.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" rx="5" fill="url(#graphGrad)" />`;
+          const barTop = padTop + plotH - bh;
+          const pctY = Math.max(12, barTop - 6);
+          svgContent += `<rect x="${bx.toFixed(1)}" y="${barTop.toFixed(1)}" width="${barW.toFixed(1)}" height="${bh.toFixed(1)}" rx="5" fill="url(#graphGrad)" />`;
+          svgContent += `<text x="${p.x.toFixed(1)}" y="${pctY.toFixed(1)}" text-anchor="middle" fill="${muted}" font-size="11" font-weight="600">${p.val}%</text>`;
           svgContent += `<text x="${p.x.toFixed(1)}" y="${(h - 10).toFixed(1)}" text-anchor="middle" fill="${muted}" font-size="10">${p.label}</text>`;
         });
       } else if (graphMode === "area") {
